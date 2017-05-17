@@ -401,4 +401,56 @@ open class YAxisRenderer: AxisRendererBase
         
         context.restoreGState()
     }
+    
+    open func renderLimitAreas(context: CGContext){
+        guard
+            let yAxis = self.axis as? YAxis,
+            let viewPortHandler = self.viewPortHandler,
+            let transformer = self.transformer
+            else { return }
+        
+        var limitAreas = yAxis.limitAreas
+        
+        if (limitAreas.count == 0)
+        {
+            return
+        }
+        
+        context.saveGState()
+        
+        let valueToPixelMatrix = transformer.valueToPixelMatrix
+        
+        var position = CGPoint(x: 0.0, y: 0.0)
+        var endPosition = CGPoint(x: 0.0, y: 0.0)
+        
+        for i in 0..<limitAreas.count {
+            let l = limitAreas[i]
+            
+            position.x = 0.0
+            position.y = l.startY
+            position = position.applying(valueToPixelMatrix)
+            
+            endPosition.y = l.endY
+            endPosition = endPosition.applying(valueToPixelMatrix)
+            
+            let topMargin = viewPortHandler.isInBoundsTop(endPosition.y) ? endPosition.y : viewPortHandler.contentTop
+            let bottomMargin = viewPortHandler.isInBoundsBottom(position.y) ? position.y : viewPortHandler.contentBottom
+            let height = bottomMargin - topMargin
+            
+            if (height > 0) {
+                let rectangle = CGRect(x: viewPortHandler.contentLeft, y: topMargin, width: viewPortHandler.contentRight - viewPortHandler.contentLeft, height: height)
+                let color = l.color
+                
+                context.setFillColor(color.cgColor)
+                context.setStrokeColor(color.cgColor)
+                context.setLineWidth(1)
+                context.addRect(rectangle)
+                context.drawPath(using: .fillStroke)
+            }
+        }
+        
+        context.restoreGState()
+        
+    }
+
 }

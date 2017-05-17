@@ -146,6 +146,7 @@
 		06B3C0F81D99F85400B1DF43 /* LineChartTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B3C0F41D99F85400B1DF43 /* LineChartTests.swift */; };
 		5B56A9CD1D905EB300F58178 /* Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B56A9CC1D905EB300F58178 /* Description.swift */; };
 		5BF8813B1DDC4DF70033370C /* IndexAxisValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8813A1DDC4DF70033370C /* IndexAxisValueFormatter.swift */; };
+		8CB761581ECC26F400F23469 /* ChartYAxisAreaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB761571ECC26F400F23469 /* ChartYAxisAreaData.swift */; };
 		D8A58A411DCE2EF8007BB012 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8A58A401DCE2EF8007BB012 /* Media.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -303,6 +304,7 @@
 		06B3C0F41D99F85400B1DF43 /* LineChartTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChartTests.swift; sourceTree = "<group>"; };
 		5B56A9CC1D905EB300F58178 /* Description.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Description.swift; sourceTree = "<group>"; };
 		5BF8813A1DDC4DF70033370C /* IndexAxisValueFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexAxisValueFormatter.swift; sourceTree = "<group>"; };
+		8CB761571ECC26F400F23469 /* ChartYAxisAreaData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartYAxisAreaData.swift; sourceTree = "<group>"; };
 		D8A58A401DCE2EF8007BB012 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = Charts/ChartsTests/Media.xcassets; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -462,6 +464,7 @@
 			isa = PBXGroup;
 			children = (
 				06B11FCF1D811B8900D14B02 /* BarChartData.swift */,
+				8CB761571ECC26F400F23469 /* ChartYAxisAreaData.swift */,
 				06B11FD01D811B8900D14B02 /* BarChartDataEntry.swift */,
 				06B11FD11D811B8900D14B02 /* BarChartDataSet.swift */,
 				06B11FD21D811B8900D14B02 /* BarLineScatterCandleBubbleChartData.swift */,
@@ -819,6 +822,7 @@
 				06B120571D811B8900D14B02 /* MarkerImage.swift in Sources */,
 				06B1207D1D811B8900D14B02 /* ILineChartDataSet.swift in Sources */,
 				06B120801D811B8900D14B02 /* IPieChartDataSet.swift in Sources */,
+				8CB761581ECC26F400F23469 /* ChartYAxisAreaData.swift in Sources */,
 				06B120C41D811B8900D14B02 /* Transformer.swift in Sources */,
 				06B1206C1D811B8900D14B02 /* LineChartData.swift in Sources */,
 				06B1208F1D811B8900D14B02 /* IHighlighter.swift in Sources */,

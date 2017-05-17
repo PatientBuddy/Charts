@@ -61,6 +61,7 @@ open class AxisBase: ComponentBase
 
     /// array of limitlines that can be set for the axis
     fileprivate var _limitLines = [ChartLimitLine]()
+    fileprivate var _limitAreas = [ChartYAxisAreaData]()
     
     /// Are the LimitLines drawn behind the data or in front of the data?
     /// 
@@ -256,6 +257,11 @@ open class AxisBase: ComponentBase
         _limitLines.append(line)
     }
     
+    /// Adds a new ChartYAxisAreaData to y axis.
+    open func addLimitArea(_ area: ChartYAxisAreaData) {
+        _limitAreas.append(area)
+    }
+    
     /// Removes the specified ChartLimitLine from the axis.
     open func removeLimitLine(_ line: ChartLimitLine)
     {
@@ -279,6 +285,11 @@ open class AxisBase: ComponentBase
     open var limitLines : [ChartLimitLine]
     {
         return _limitLines
+    }
+    
+    /// - returns: The LimitAreas of y axis.
+    open var limitAreas: [ChartYAxisAreaData] {
+        return _limitAreas
     }
     
     // MARK: Custom axis ranges
