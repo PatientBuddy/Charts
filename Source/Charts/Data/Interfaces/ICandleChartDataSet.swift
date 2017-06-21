@@ -63,4 +63,10 @@ public protocol ICandleChartDataSet: ILineScatterCandleRadarChartDataSet
     
     /// Are decreasing values drawn as filled?
     var isDecreasingFilled: Bool { get }
+    
+    // color for point
+    var pointColor: NSUIColor? { get set }
+    
+    // color for point center
+    var pointCenterColor: NSUIColor? { get set }
 }

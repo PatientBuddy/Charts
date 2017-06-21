@@ -48,7 +48,7 @@ open class CandleChartDataSet: LineScatterCandleRadarChartDataSet, ICandleChartD
     
     open override func calcMinMaxY(entry e: ChartDataEntry)
     {
-        guard let e = e as? CandleChartDataEntry
+        guard let e = e as? CandleChartDataEntry, e.low != -200
             else { return }
         
         if e.high < _yMin
@@ -144,4 +144,10 @@ open class CandleChartDataSet: LineScatterCandleRadarChartDataSet, ICandleChartD
     
     /// Are decreasing values drawn as filled?
     open var isDecreasingFilled: Bool { return decreasingFilled }
+    
+    // color for point
+    open var pointColor: NSUIColor?
+    
+    // color for point center
+    open var pointCenterColor: NSUIColor?
 }
