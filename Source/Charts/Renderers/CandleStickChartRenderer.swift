@@ -101,115 +101,103 @@ open class CandleStickChartRenderer: LineScatterCandleRadarRenderer
 
             if showCandleBar
             {
-                // calculate the shadow
-                
-                _shadowPoints[0].x = CGFloat(xPos)
-                _shadowPoints[1].x = CGFloat(xPos)
-                _shadowPoints[2].x = CGFloat(xPos)
-                _shadowPoints[3].x = CGFloat(xPos)
-                
-                if open > close
-                {
-                    _shadowPoints[0].y = CGFloat(high * phaseY)
-                    _shadowPoints[1].y = CGFloat(open * phaseY)
-                    _shadowPoints[2].y = CGFloat(low * phaseY)
-                    _shadowPoints[3].y = CGFloat(close * phaseY)
-                }
-                else if open < close
-                {
-                    _shadowPoints[0].y = CGFloat(high * phaseY)
-                    _shadowPoints[1].y = CGFloat(close * phaseY)
-                    _shadowPoints[2].y = CGFloat(low * phaseY)
-                    _shadowPoints[3].y = CGFloat(open * phaseY)
-                }
-                else
-                {
-                    _shadowPoints[0].y = CGFloat(high * phaseY)
-                    _shadowPoints[1].y = CGFloat(open * phaseY)
-                    _shadowPoints[2].y = CGFloat(low * phaseY)
-                    _shadowPoints[3].y = _shadowPoints[1].y
-                }
-                
-                trans.pointValuesToPixel(&_shadowPoints)
-                
-                // draw the shadows
-                
-                var shadowColor: NSUIColor! = nil
-                if dataSet.shadowColorSameAsCandle
-                {
-                    if open > close
-                    {
-                        shadowColor = dataSet.decreasingColor ?? dataSet.color(atIndex: j)
-                    }
-                    else if open < close
-                    {
-                        shadowColor = dataSet.increasingColor ?? dataSet.color(atIndex: j)
-                    }
-                    else
-                    {
-                        shadowColor = dataSet.neutralColor ?? dataSet.color(atIndex: j)
-                    }
-                }
-                
-                if shadowColor === nil
-                {
-                    shadowColor = dataSet.shadowColor ?? dataSet.color(atIndex: j)
-                }
-                
-                context.setStrokeColor(shadowColor.cgColor)
-                context.strokeLineSegments(between: _shadowPoints)
-                
-                // calculate the body
-                
-                _bodyRect.origin.x = CGFloat(xPos) - 0.5 + barSpace
-                _bodyRect.origin.y = CGFloat(close * phaseY)
-                _bodyRect.size.width = (CGFloat(xPos) + 0.5 - barSpace) - _bodyRect.origin.x
-                _bodyRect.size.height = CGFloat(open * phaseY) - _bodyRect.origin.y
-                
-                trans.rectValueToPixel(&_bodyRect)
-                
-                // draw body differently for increasing and decreasing entry
-
-                if open > close
-                {
-                    accessibilityMovementDescription = "decreasing"
-
-                    let color = dataSet.decreasingColor ?? dataSet.color(atIndex: j)
+                if open != close {
+                    let barColor = dataSet.decreasingColor ?? dataSet.color(atIndex: j)
+                    _bodyRect.origin.x = CGFloat(xPos) - 0.5 + barSpace
+                    _bodyRect.origin.y = CGFloat(close * phaseY)
+                    _bodyRect.size.width = (CGFloat(xPos) + 0.5 - barSpace) - _bodyRect.origin.x
+                    _bodyRect.size.height = CGFloat(open * phaseY) - _bodyRect.origin.y
                     
-                    if dataSet.isDecreasingFilled
-                    {
-                        context.setFillColor(color.cgColor)
-                        context.fill(_bodyRect)
-                    }
-                    else
-                    {
-                        context.setStrokeColor(color.cgColor)
-                        context.stroke(_bodyRect)
-                    }
+                    trans.rectValueToPixel(&_bodyRect)
+                    let centerMidX = _bodyRect.midX
+                    _bodyRect.origin.x = centerMidX - 2
+                    _bodyRect.size.width = 4
+                    
+                    context.setFillColor(barColor.cgColor)
+                    context.fill(_bodyRect)
                 }
-                else if open < close
-                {
-                    accessibilityMovementDescription = "increasing"
+            
+                // Draw top points
+                let centerColor = dataSet.pointCenterColor ?? dataSet.color(atIndex: j)
+                let strokeColor = dataSet.pointColor ?? dataSet.color(atIndex: j)
+            
+                // Draw open point
+                var openPoint = CGRect()
+                openPoint.origin.x = CGFloat(xPos) - 0.5 + barSpace
+                openPoint.origin.y = CGFloat(close * phaseY)
+                openPoint.size.width = (CGFloat(xPos) + 0.5 - barSpace) - openPoint.origin.x
+                openPoint.size.height = CGFloat(open * phaseY) - openPoint.origin.y
+                
+                trans.rectValueToPixel(&openPoint)
+                let midX = openPoint.midX
+                openPoint.origin.x = midX - 2
+                openPoint.size.width = 4
+                openPoint.size.height = 4
+                
+                context.setFillColor(strokeColor.cgColor)
+                context.setStrokeColor(strokeColor.cgColor)
+                context.setLineWidth(2)
+                context.addEllipse(in: openPoint)
+                context.drawPath(using: .fillStroke)
+                
+                var centerPoint = CGRect()
+                centerPoint.origin.x = CGFloat(xPos) - 0.5 + barSpace
+                centerPoint.origin.y = CGFloat(close * phaseY)
+                centerPoint.size.width = (CGFloat(xPos) + 0.5 - barSpace) - centerPoint.origin.x
+                centerPoint.size.height = CGFloat(open * phaseY) - centerPoint.origin.y
+                
+                trans.rectValueToPixel(&centerPoint)
+                let centerMidX = centerPoint.midX
+                centerPoint.origin.x = centerMidX - 1
+                centerPoint.origin.y = openPoint.origin.y + 1
+                centerPoint.size.width = 2
+                centerPoint.size.height = 2
+                
+                context.setFillColor(centerColor.cgColor)
+                context.setStrokeColor(centerColor.cgColor)
+                context.setLineWidth(2)
+                context.addEllipse(in: centerPoint)
+                context.drawPath(using: .fillStroke)
 
-                    let color = dataSet.increasingColor ?? dataSet.color(atIndex: j)
+                // Draw bottom points
+                if open != close {
+                    var closePoint = CGRect()
+                    closePoint.origin.x = CGFloat(xPos) - 0.5 + barSpace
+                    closePoint.origin.y = CGFloat(close * phaseY)
+                    closePoint.size.width = (CGFloat(xPos) + 0.5 - barSpace) - closePoint.origin.x
+                    closePoint.size.height = CGFloat(open * phaseY) - closePoint.origin.y
                     
-                    if dataSet.isIncreasingFilled
-                    {
-                        context.setFillColor(color.cgColor)
-                        context.fill(_bodyRect)
-                    }
-                    else
-                    {
-                        context.setStrokeColor(color.cgColor)
-                        context.stroke(_bodyRect)
-                    }
-                }
-                else
-                {
-                    let color = dataSet.neutralColor ?? dataSet.color(atIndex: j)
+                    trans.rectValueToPixel(&closePoint)
+                    let midX = closePoint.midX
+                    closePoint.origin.x = midX - 2
+                    closePoint.origin.y = closePoint.origin.y + closePoint.size.height
+                    closePoint.size.width = 4
+                    closePoint.size.height = 4
                     
-                    context.setStrokeColor(color.cgColor)
-                    context.stroke(_bodyRect)
+                    context.setFillColor(strokeColor.cgColor)
+                    context.setStrokeColor(strokeColor.cgColor)
+                    context.setLineWidth(2)
+                    context.addEllipse(in: closePoint)
+                    context.drawPath(using: .fillStroke)
+                    
+                    var closeCenterPoint = CGRect()
+                    closeCenterPoint.origin.x = CGFloat(xPos) - 0.5 + barSpace
+                    closeCenterPoint.origin.y = CGFloat(close * phaseY)
+                    closeCenterPoint.size.width = (CGFloat(xPos) + 0.5 - barSpace) - closeCenterPoint.origin.x
+                    closeCenterPoint.size.height = CGFloat(open * phaseY) - closeCenterPoint.origin.y
+                    
+                    trans.rectValueToPixel(&closeCenterPoint)
+                    let centerMidX = closeCenterPoint.midX
+                    closeCenterPoint.origin.x = centerMidX - 1
+                    closeCenterPoint.origin.y = closePoint.origin.y + 1
+                    closeCenterPoint.size.width = 2
+                    closeCenterPoint.size.height = 2
+                    
+                    context.setFillColor(centerColor.cgColor)
+                    context.setStrokeColor(centerColor.cgColor)
+                    context.setLineWidth(2)
+                    context.addEllipse(in: closeCenterPoint)
+                    context.drawPath(using: .fillStroke)
                 }
             }
             else

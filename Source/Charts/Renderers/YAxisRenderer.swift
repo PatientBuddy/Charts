@@ -393,7 +393,6 @@ open class YAxisRenderer: AxisRendererBase
     open func renderLimitAreas(context: CGContext){
         guard
             let yAxis = self.axis as? YAxis,
-            let viewPortHandler = self.viewPortHandler,
             let transformer = self.transformer
             else { return }
         
